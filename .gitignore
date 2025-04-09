@@ -11,9 +11,7 @@ lerna-debug.log*
 **/node_modules/
 
 
-# Ignore node_modules for both frontend and backend
-client/node_modules/
-server/node_modules/
+
 dist
 dist-ssr
 *.local
