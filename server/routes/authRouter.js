@@ -12,4 +12,5 @@ authRouter.post('/verify-account', userAuth, verifyEmail);
 authRouter.post('/is-auth', userAuth, isAuthenticated,);
 
 
+
 export default authRouter;
