@@ -1,10 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { assets } from "../assets/assets2/assets";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 function Login() {
     const navigate = useNavigate();
+    const {backendUrl, setIsLoggedin} = useContext(AppContext);
   const [state, setState] = useState("Sign Up");
   const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
