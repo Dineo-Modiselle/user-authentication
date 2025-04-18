@@ -17,11 +17,12 @@ const PORT = process.env.PORT || 4000;
 // Connect to MongoDB
 connectDB();
 
+const corsOptions = ['http://localhost:5173'];
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true,
-  origin: "http://localhost:5173",}));
+  origin: corsOptions,}));
 
 //api endpoints 
 app.get('/', (req, res) => {

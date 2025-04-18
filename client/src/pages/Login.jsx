@@ -3,15 +3,55 @@ import { useState,useContext } from "react";
 import { assets } from "../assets/assets2/assets";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
     const navigate = useNavigate();
-    const {backendUrl, setIsLoggedin} = useContext(AppContext);
+    const {backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
+
   const [state, setState] = useState("Sign Up");
   const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [name, setName] = useState("");  
+    const [name, setName] = useState(""); 
+    const onSubmitHandler = async (e) => {
+    try {
+        e.preventDefault();
+        axios.defaults.withCredentials = true;
+        if(state==='Sign Up'){
+const {data} = await axios.post(backendUrl + "/api/auth/register", {name,email,password})
+        if(data.success){
+            setIsLoggedIn(true);
+           getUserData();
+            navigate("/");
+        }else{
+            toast.error(data.message);
+        }
+        }else{
+            const {data} = await axios.post(backendUrl + "/api/auth/login", {email,password})
+        if(data.success){
+            setIsLoggedIn(true);
+             getUserData();
+            navigate("/");
+        }else{
+            toast.error(data.message);
+        }
+
+
+        }
+    } catch (error) {
+        console.error(error); // log the full error
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+      }
+      
+} 
+    
   return (
+
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-br from-blue-200 to-purple-400 ">
       <img
         src={assets.logo}
@@ -28,7 +68,7 @@ function Login() {
             ? "Create your account"
             : "Login to your account"}
         </p>
-        <form>
+        <form onSubmit={onSubmitHandler}>
             {state === "Sign Up" && (
           <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-gray-500  ">
             <img src={assets.person_icon} alt="" />
